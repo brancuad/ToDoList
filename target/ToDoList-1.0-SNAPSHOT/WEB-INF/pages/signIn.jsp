@@ -8,4 +8,4 @@
 <%
     UserService userService = UserServiceFactory.getUserService();
 %>
-<body><a href="<%= userService.createLoginURL(request.getRequestURI()) %>">Sign in</a></body>
+<body><a href="<%= userService.createLoginURL() %>">Sign in</a></body>

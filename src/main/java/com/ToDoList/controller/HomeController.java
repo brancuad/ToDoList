@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 /**
@@ -24,15 +23,16 @@ public class HomeController {
 
     //default method controller
     @RequestMapping("/")
-    public ModelAndView signin(HttpServletRequest request) {
+    public ModelAndView home() {
         UserService userService = UserServiceFactory.getUserService();
         User user = userService.getCurrentUser();
 
         //if a user is not signed in, redirect to sign in page
         if (user == null) {
-            ModelAndView model = new ModelAndView(userService.createLoginURL("/"));
+            ModelAndView model = new ModelAndView("redirect:" + userService.createLoginURL("/"));
             return model;
         }
+
         //display lists for logged in user
         else{
             List<String> names = new ArrayList<String>();
@@ -59,14 +59,14 @@ public class HomeController {
     }
 
     @RequestMapping("/signout")
-    public String signout(HttpServletRequest request){
+    public ModelAndView signout (){
         UserService userService = UserServiceFactory.getUserService();
-
-        return userService.createLogoutURL(request.getRequestURI());
+        ModelAndView model = new ModelAndView("redirect:" + userService.createLogoutURL("/"));
+        return model;
     }
 
     @RequestMapping("/createList")
-    public ModelAndView createList(@RequestParam("listName") String name, HttpServletRequest request){
+    public ModelAndView createList(@RequestParam("listName") String name){
         UserService userService = UserServiceFactory.getUserService();
         User user = userService.getCurrentUser();  // Find out who the user is.
 
@@ -77,14 +77,14 @@ public class HomeController {
         ObjectifyService.ofy().save().entity(list).now();
 
 
-        return signin(request);
+        return home();
     }
 
     @RequestMapping("/deleteList")
-    public ModelAndView deleteList(@RequestParam("name") String name, HttpServletRequest request){
+    public ModelAndView deleteList(@RequestParam("name") String name){
         Key<ToDoList> theList = Key.create(ToDoList.class, name);
         ObjectifyService.ofy().delete().key(theList);
-        return signin(request);
+        return home();
     }
 
     @RequestMapping("/editList")
