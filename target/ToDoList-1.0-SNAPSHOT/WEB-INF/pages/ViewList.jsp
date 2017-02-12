@@ -62,6 +62,7 @@
 
     <script>
         $("document").ready(function() {
+            //event handlers
             $("#itemsTable tr").click(function() {
                 if ($(this).hasClass("disabled")) {
                     return;
@@ -74,7 +75,9 @@
                 $("#itemToBeDeleted").attr("value", $(this).attr('id'));
             });
 
-
+            $("#addNewListItemButton").click(function(){
+                $("#newListItemDialog").show();
+            });
         });
     </script>
 </head>
@@ -82,6 +85,7 @@
 <body>
     <form method="post">
     <div id="file">
+        <!-- It doesnt seem like these buttons will be used according to how the application is built -->
         <button class="fileButton" type="submit" title="Create New List">
             <img src="../images/New.png" />
         </button>
@@ -91,6 +95,8 @@
         <button class="fileButton" type="submit" title="Save List">
             <img src="../images/Save.png" />
         </button>
+        <!-- end comment -->
+
         <button class="fileButton" type="submit" title="Exit" onclick="form.action='/'">
             <img src="../images/Exit.png" />
         </button>
@@ -106,16 +112,18 @@
         <h3>Details</h3>
         <table id="detailsTable">
             <tr>
-                <form>
+                <form method="post" action="/saveListInfo">
                     <td>Name of Todo List:</td>
                     <td>
-                        <input type="text" name="listName" value="${listName}"/>
+                        <input type="text" name="name" value="${listName}"/>
                     </td>
 
                     <td>Name of Owner:</td>
                     <td>
-                        <input type="text" name="listOwner" />
+                        <input type="text" name="ownerName" value="${ownerName}" />
                     </td>
+                    <input type="hidden" name="listId" value="${listId}"/>
+                    <input type="submit" value="Update" />
                 </form>
             </tr>
         </table>
@@ -126,7 +134,7 @@
 
         <form method="post">
             <div id="itemTools">
-                <button type="button" class="itemButton" onclick="showAddListItemDialog()" title="Add item">
+                <button type="button" class="itemButton" id="addNewListItemButton" title="Add item">
                     <img src="../images/Add.png" />
                 </button>
                 <button class="itemButton" type="submit" title="Remove Item" onclick="form.action='/removeListItem'">
@@ -135,6 +143,11 @@
 
                 <!-- list name parameter -->
                 <input type="hidden" value="${listName}" name="listName"/>
+
+                <!-- id of list being viewed -->
+                <input type="hidden" value="${listId}" name="listId"/>
+
+                <input type="hidden" name="ownerName" value="${ownerName}" />
 
                 <!-- keeps track of selected list item id -->
                 <input id="itemToBeDeleted" type="hidden" name="id"/>
@@ -172,16 +185,18 @@
             </tbody>
         </table>
     </div>
-    <div id="newListItemDialog">
+    <div id="newListItemDialog" style="display:none;">
         New List Item
         <form action="/createListItem" method="post">
             <input type="text" name="category"/>
             <input type="text" name="description"/>
             <input type="date" name="startDate"/>
             <input type="date" name="endDate"/>
-            <input type='hidden' value='false' name='completed'/>
-            <input type='checkbox' value='true' name='completed'/>
+            <input type='checkbox' value="true" name="completed"/>
+            <input type='checkbox' checked="checked" value="false" name="completed" style="display: none;"/>
             <input type="hidden" value="${listName}" name="listName"/>
+            <input type="hidden" value="${listId}" name="listId"/>
+            <input type="hidden" name="ownerName" value="${ownerName}" />
             <input type="submit" value="Add"/>
         </form>
     </div>

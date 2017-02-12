@@ -34,18 +34,18 @@ public class ListItem {
     /**
      * A convenience constructor
      **/
-    public ListItem(String key) {
+    public ListItem(Long key) {
         if( key != null ) {
             listKey = Key.create(ToDoList.class, key);  // Creating the Ancestor key
         } else {
-            listKey = Key.create(ToDoList.class, "default");
+            listKey = Key.create(ToDoList.class, 0); //TODO: handle null key better
         }
     }
 
     /**
      * Takes all important fields
      **/
-    public ListItem(String key, String category, String id, String email, int index, String description, String startDate, String endDate,
+    public ListItem(Long key, String category, String id, String email, int index, String description, String startDate, String endDate,
                         boolean completed) {
         this(key);
         author_email = email;

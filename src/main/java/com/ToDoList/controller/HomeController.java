@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
 import java.util.List;
 /**
  * Created by awaeschoudhary on 2/9/17.
@@ -35,23 +34,16 @@ public class HomeController {
 
         //display lists for logged in user
         else{
-            List<String> names = new ArrayList<String>();
 
             //load lists for the user
             List<ToDoList> lists = ObjectifyService.ofy()
                     .load()
-                    .type(ToDoList.class) // We want only Greetings
+                    .type(ToDoList.class)
+                    .filter("author_id", user.getUserId()) //only get lists for the logged in user.
                     .list();
 
-            //add names for lists to return list
-            for (ToDoList list : lists) {
-                if (list.getAuthorEmail() != null && list.getAuthorEmail().equals(user.getEmail())) {
-                    names.add(list.listName);
-                }
-            }
-
             ModelAndView model = new ModelAndView("WEB-INF/pages/Lists");
-            model.addObject("lists", names);
+            model.addObject("lists", lists);
             model.addObject("username", user.getEmail());
 
             return model;
@@ -73,46 +65,63 @@ public class HomeController {
         ToDoList list = new ToDoList(name);
         list.setAuthor(user.getEmail(),user.getUserId());
 
-        //Save the guestbook object
+        //Save the list
         ObjectifyService.ofy().save().entity(list).now();
-
 
         return home();
     }
 
     @RequestMapping("/deleteList")
-    public ModelAndView deleteList(@RequestParam("name") String name){
-        Key<ToDoList> theList = Key.create(ToDoList.class, name);
+    public ModelAndView deleteList(@RequestParam("id") Long listId){
+        Key<ToDoList> theList = Key.create(ToDoList.class, listId);
         ObjectifyService.ofy().delete().key(theList);
         return home();
     }
 
     @RequestMapping("/editList")
-    public ModelAndView editList(@RequestParam("name") String name){
-        ///Fills a list called greeting with all the greetings from that query
-        // Create the correct Ancestor key name is figured out from before , so create the guestbook with the name given
-        Key<ToDoList> listKey = Key.create(ToDoList.class, name);
+    public ModelAndView editList(@RequestParam("id") Long listId, @RequestParam("name") String listName, @RequestParam("ownerName") String ownerName){
+        //create key for list with specified list ID
+        Key<ToDoList> listKey = Key.create(ToDoList.class, listId);
 
-        // Run an ancestor query to ensure we see the most up-to-date
-        // view of the Greetings belonging to the selected Guestbook.
         List<ListItem> listItems = ObjectifyService.ofy()
                 .load()
-                .type(ListItem.class) // We want only Greetings
-                .ancestor(listKey)    // Anyone in this book
+                .type(ListItem.class)
+                .ancestor(listKey)
                 .order("ord_ind")       // sort based on order index
-                .limit(25)             // Only show 5 of them.
+                .limit(25)             // not sure if we need to limit the results. But ill leave this here for now.
                 .list();
 
         ModelAndView model = new ModelAndView("WEB-INF/pages/ViewList");
         model.addObject("listItems", listItems);
-        model.addObject("listName", name);
+        model.addObject("listName", listName);
+        model.addObject("listId", listId);
+        model.addObject("ownerName", ownerName);
 
         return model;
 
     }
 
+
+    @RequestMapping("/saveListInfo")
+    public ModelAndView saveListInfo(@RequestParam("listId") Long id, @RequestParam("name") String name, @RequestParam("ownerName") String ownerName){
+        //get ToDoList using the id
+        ToDoList list = ObjectifyService.ofy()
+                .load()
+                .type(ToDoList.class)
+                .id(id).now();
+
+        //update list info
+        list.setOwnerName(ownerName);
+        list.listName = name;
+
+        //save
+        ObjectifyService.ofy().save().entity(list).now();
+
+        return editList(id, name, ownerName);
+    }
+
     @RequestMapping("/createListItem")
-    public ModelAndView createListItem(@RequestParam("listName") String listName, @RequestParam("category") String category, @RequestParam("description") String description,
+    public ModelAndView createListItem(@RequestParam("listId") Long listId, @RequestParam("listName") String listName, @RequestParam("ownerName") String ownerName, @RequestParam("category") String category, @RequestParam("description") String description,
                                        @RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate, @RequestParam("completed") boolean completed){
         ListItem item;
 
@@ -120,7 +129,7 @@ public class HomeController {
         User user = userService.getCurrentUser();  // Find out who the user is.
 
 
-        com.googlecode.objectify.Key<ToDoList> listKey = com.googlecode.objectify.Key.create(ToDoList.class, listName);
+        com.googlecode.objectify.Key<ToDoList> listKey = com.googlecode.objectify.Key.create(ToDoList.class, listId);
         // Run an ancestor query to ensure we see the most up-to-date
         // view of the Greetings belonging to the selected Guestbook.
         List<ListItem> items = ObjectifyService.ofy()
@@ -133,9 +142,9 @@ public class HomeController {
 
         // CHANGE Greeting TO Task!! Add category, description, start, end, completed
         if (user != null) {
-            item = new ListItem(listName, category, user.getUserId(), user.getEmail(), index, description, startDate, endDate, completed);
+            item = new ListItem(listId, category, user.getUserId(), user.getEmail(), index, description, startDate, endDate, completed);
         } else {
-            item = new ListItem(listName, category, "999", "anon", index, description, startDate, endDate, completed);
+            item = new ListItem(listId, category, "999", "anon", index, description, startDate, endDate, completed);
         }
 
         // Use Objectify to save the greeting and now() is used to make the call synchronously as we
@@ -146,16 +155,16 @@ public class HomeController {
         //To Delete
 
         //ObjectifyService.ofy().delete().key(thingKey1).now();  // synchronous
-        return editList(listName);
+        return editList(listId, listName, ownerName);
 
     }
 
     @RequestMapping("/removeListItem")
-    public ModelAndView removeListItem(@RequestParam("listName") String listName, @RequestParam("id") String itemId){
+    public ModelAndView removeListItem(@RequestParam("listId") Long listId, @RequestParam("listName") String listName, @RequestParam("id") String itemId, @RequestParam("ownerName") String ownerName){
 
         long itemIdLong = Long.parseLong(itemId);
 
-        Key<ToDoList> listKey = Key.create(ToDoList.class, listName);
+        Key<ToDoList> listKey = Key.create(ToDoList.class, listId);
         // Run an ancestor query to ensure we see the most up-to-date
         // view of the Greetings belonging to the selected Guestbook.
         List<ListItem> items = ObjectifyService.ofy()
@@ -182,16 +191,14 @@ public class HomeController {
 
         ObjectifyService.ofy().save().entities(items).now();
 
-        return editList(listName);
-
+        return editList(listId, listName, ownerName);
     }
 
     @RequestMapping("/moveItemUp")
-    public ModelAndView moveItemUp(@RequestParam("listName") String listName, @RequestParam("id") String itemId){
-        Key<ToDoList> listKey = Key.create(ToDoList.class, listName);
+    public ModelAndView moveItemUp(@RequestParam("listId") Long listId, @RequestParam("listName") String listName, @RequestParam("id") String itemId, @RequestParam("ownerName") String ownerName){
+        Key<ToDoList> listKey = Key.create(ToDoList.class, listId);
 
-        // Run an ancestor query to ensure we see the most up-to-date
-        // view of the Greetings belonging to the selected Guestbook.
+        //get all list items for the list being viewed
         List<ListItem> items = ObjectifyService.ofy()
                 .load()
                 .type(ListItem.class)
@@ -219,13 +226,13 @@ public class HomeController {
 
 
         }
-        return editList(listName);
+        return editList(listId, listName, ownerName);
 
     }
 
     @RequestMapping("/moveItemDown")
-    public ModelAndView moveItemDown(@RequestParam("listName") String listName, @RequestParam("id") String itemId){
-        Key<ToDoList> listKey = Key.create(ToDoList.class, listName);
+    public ModelAndView moveItemDown(@RequestParam("listId") Long listId, @RequestParam("listName") String listName, @RequestParam("id") String itemId, @RequestParam("ownerName") String ownerName){
+        Key<ToDoList> listKey = Key.create(ToDoList.class, listId);
 
         // Run an ancestor query to ensure we see the most up-to-date
         // view of the Greetings belonging to the selected Guestbook.
@@ -256,7 +263,7 @@ public class HomeController {
 
 
         }
-        return editList(listName);
+        return editList(listId, listName, ownerName);
 
     }
 }

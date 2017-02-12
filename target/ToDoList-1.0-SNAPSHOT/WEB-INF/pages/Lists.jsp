@@ -20,17 +20,19 @@
     </head>
 
     <body>
-        <h4>Welcome ${username} <form method="post"><input type="submit" value="(signout)" onclick="form.action='/signout';"/></form></h4>
+        <h4>Welcome ${username}</h4><form method="post"><button type="submit" value="(signout)" onclick="form.action='/signout';"></button></form>
         <h3>Your To Do Lists:</h3>
 
-        <div id="addNewListButton">Add New List</div>
+        <button type="button" id="addNewListButton">Add New List</button>
 
         <c:forEach var="listValue" items="${lists}">
-            <h3>${listValue}</h3>
+            <h3>${listValue.listName}</h3>
             <form method="post">
                 <input type="submit" value="edit" onclick="form.action='/editList';"/>
                 <input type="submit" value="delete" onclick="form.action='/deleteList';"/>
-                <input type="hidden" value="${listValue}" name="name"/>
+                <input type="hidden" value="${listValue.id}" name="id"/>
+                <input type="hidden" value="${listValue.listName}" name="name"/>
+                <input type="hidden" value="${listValue.ownerName}" name="ownerName"/>
             </form>
          </c:forEach>
 
