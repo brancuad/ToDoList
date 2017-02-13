@@ -103,15 +103,14 @@
     <form method="post">
     <div id="file">
         <!-- It doesnt seem like these buttons will be used according to how the application is built -->
-        <button class="fileButton" type="submit" title="Create New List">
-            <img src="../images/New.png" />
-        </button>
-        <button class="fileButton" type="submit" title="Load Existing List">
-            <img src="../images/Load.png" />
-        </button>
-        <button class="fileButton" type="submit" title="Save List">
-            <img src="../images/Save.png" />
-        </button>
+        <%--<button class="fileButton" type="submit" title="Create New List">--%>
+            <%--<img src="../images/New.png" />--%>
+        <%--</button>--%>
+        <%--<button class="fileButton" type="submit" title="Load Existing List">--%>
+            <%--<img src="../images/Load.png" />--%>
+        <%--</button>--%>
+        <%--<button class="fileButton" type="submit" title="Save List">--%>
+            <%--<img src="../images/Save.png" />--%>
         <!-- end comment -->
 
         <button class="fileButton" type="submit" title="Exit" onclick="form.action='/'">
@@ -176,7 +175,7 @@
                     <img src="../images/MoveDown.png" />
                 </button>
                 <button class="fileButton" type="button" title="Edit" onclick="populateEditListItemDialog()">
-                </button>
+                Update</button>
             </div>
         </form>
 
