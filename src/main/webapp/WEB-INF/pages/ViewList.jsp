@@ -94,6 +94,7 @@
             else{
                 $("#editItemCompleted").attr("checked", false);
             }
+
             $("#editListItemDialog").show();
         }
     </script>
@@ -111,6 +112,7 @@
         <%--</button>--%>
         <%--<button class="fileButton" type="submit" title="Save List">--%>
             <%--<img src="../images/Save.png" />--%>
+        <%--</button>--%>
         <!-- end comment -->
 
         <button class="fileButton" type="submit" title="Exit" onclick="form.action='/'">
@@ -174,8 +176,8 @@
                 <button class="itemButton" type="submit" onclick="form.action='/moveItemDown';">
                     <img src="../images/MoveDown.png" />
                 </button>
-                <button class="fileButton" type="button" title="Edit" onclick="populateEditListItemDialog()">
-                Update</button>
+                <button class="fileButton" type="button" id="updateListItemButton" title="Edit" onclick="populateEditListItemDialog()">Update
+                </button>
             </div>
         </form>
 
@@ -204,7 +206,7 @@
         </table>
     </div>
     <div id="newListItemDialog" style="display:none;">
-        New List Item
+        New Task
         <form action="/createListItem" method="post">
             <input type="text" name="category"/>
             <input type="text" name="description"/>
@@ -218,7 +220,8 @@
             <input type="submit" value="Add"/>
         </form>
     </div>
-    <div id="editListItemDialog" display="none">
+    <div id="editListItemDialog" style="display:none;">
+        Edit Task
         <form method="post" action="/editListItem">
             <input id="editItemCategoryInput" type="text" name="category"/>
             <input id="editItemDescriptionInput" type="text" name="description"/>
