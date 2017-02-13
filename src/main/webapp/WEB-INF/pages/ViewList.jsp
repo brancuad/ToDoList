@@ -10,6 +10,10 @@
     <script src="../scripts/jquery-3.1.1.min.js"></script>
 
     <style>
+        #editListItemDialog {
+            display: none;
+            margin: 10px;
+        }
 
     </style>
 
@@ -24,9 +28,14 @@
                 $("#itemsTable tr").removeClass("selected");
                 $(this).addClass("selected");
 
+<<<<<<< HEAD
                 //update the itemToBeDeleted field
                 $("#itemToBeDeleted").attr("value", $(this).attr('id'));
                 $("#itemToBeEdited").attr("value", $(this).attr('id'));
+=======
+                //update the selectedItem field
+                $("#selectedItem").attr("value", $(this).attr('id'));
+>>>>>>> UI updates
 
             });
 
@@ -35,7 +44,10 @@
             });
         });
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> UI updates
         function populateEditListItemDialog(){
             //we are setting the value of the edit text fields to the html between the td elements of the
             //selected list item row
@@ -49,8 +61,12 @@
             else{
                 $("#editItemCompleted").attr("checked", false);
             }
+<<<<<<< HEAD
 
             $("#editListItemDialog").show();
+=======
+            $("#editListItemDialog").fadeIn();
+>>>>>>> UI updates
         }
 
         function moveDown() {
@@ -74,7 +90,11 @@
                 default: return;
             }
         });
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> UI updates
     </script>
 </head>
 
@@ -157,8 +177,13 @@
                     <img src="../images/MoveDown.png" />
                 </button>
 
+<<<<<<< HEAD
                 <button class="fileButton" type="button" id="updateListItemButton" title="Edit" onclick="populateEditListItemDialog()">
                     Update
+=======
+                <button class="fileButton" type="button" title="Edit" onclick="populateEditListItemDialog()">
+                    <img src="../images/Edit.png" />
+>>>>>>> UI updates
                 </button>
             </div>
 
@@ -201,21 +226,25 @@
             <input type="submit" value="Add"/>
         </form>
     </div>
+
     <div id="editListItemDialog" style="display:none;">
         Edit Task
+
         <form method="post" action="/editListItem">
             <input id="editItemCategoryInput" type="text" name="category"/>
             <input id="editItemDescriptionInput" type="text" name="description"/>
-            <input id="editItemStartDateInput" type="text" name="startDate"/>
-            <input id="editItemEndDateInput" type="text" name="endDate"/>
+            <input id="editItemStartDateInput" type="date" name="startDate"/>
+            <input id="editItemEndDateInput" type="date" name="endDate"/>
             <input id="editItemCompleted" type='checkbox' value="true" name="completed"/>
             <input type='checkbox' checked="checked" value="false" name="completed" style="display: none;"/>
             <input type="hidden" value="${listName}" name="listName"/>
             <input type="hidden" value="${listId}" name="listId"/>
             <input type="hidden" name="ownerName" value="${ownerName}" />
             <!-- keeps track of selected list item id -->
+
             <input id="itemToBeEdited" type="hidden" name="id"/>
             <button type="submit" value="edit">Update</button>
+
         </form>
     </div>
 </body>
