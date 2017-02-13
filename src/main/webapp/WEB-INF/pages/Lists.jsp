@@ -20,7 +20,7 @@
     </head>
 
     <body>
-        <h4>Welcome ${username}</h4><form method="post"><button type="submit" value="(signout)" onclick="form.action='/signout';"></button></form>
+        <h4>Welcome ${username}</h4><form method="post"><button type="submit" value="(signout)" onclick="form.action='/signout';">Sign in</button></form>
         <h3>Your To Do Lists:</h3>
 
         <button type="button" id="addNewListButton">Add New List</button>
