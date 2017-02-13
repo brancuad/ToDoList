@@ -266,4 +266,26 @@ public class HomeController {
         return editList(listId, listName, ownerName);
 
     }
+
+    @RequestMapping("/editListItem")
+    public ModelAndView editListItem(@RequestParam("listId") Long listId, @RequestParam("listName") String listName, @RequestParam("id") Long itemId, @RequestParam("ownerName") String ownerName,
+                                     @RequestParam("category") String category, @RequestParam("description") String description, @RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate, @RequestParam("completed") boolean completed){
+
+        Key<ToDoList> listKey = Key.create(ToDoList.class, listId);
+
+        //retrieve list item from datastore
+        ListItem item = ObjectifyService.ofy().load().type(ListItem.class).parent(listKey).id(itemId).now();
+
+        //set new values
+        item.setCategory(category);
+        item.setDescription(description);
+        item.setStartDate(startDate);
+        item.setEndDate(endDate);
+        item.setCompleted(completed);
+
+        //save
+        ObjectifyService.ofy().save().entity(item).now();
+
+        return editList(listId, listName, ownerName);
+    }
 }

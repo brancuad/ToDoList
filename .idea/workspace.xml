@@ -2,22 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8e51d825-e0d2-48e8-b7f6-eb0ba0412af8" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/ToDoList-1.0-SNAPSHOT/WEB-INF/appengine-generated/local_db.bin" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/ToDoList-1.0-SNAPSHOT.war" afterPath="$PROJECT_DIR$/target/ToDoList-1.0-SNAPSHOT.war" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/ToDoList-1.0-SNAPSHOT/WEB-INF/lib/ToDoList-1.0-SNAPSHOT.jar" afterPath="$PROJECT_DIR$/target/ToDoList-1.0-SNAPSHOT/WEB-INF/lib/ToDoList-1.0-SNAPSHOT.jar" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/ToDoList/Beans/ListItem.java" afterPath="$PROJECT_DIR$/src/main/java/com/ToDoList/Beans/ListItem.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/ToDoList/Beans/ToDoList.java" afterPath="$PROJECT_DIR$/src/main/java/com/ToDoList/Beans/ToDoList.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/ToDoList/controller/HomeController.java" afterPath="$PROJECT_DIR$/src/main/java/com/ToDoList/controller/HomeController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/Lists.jsp" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/Lists.jsp" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/ViewList.jsp" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/ViewList.jsp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/ToDoList-1.0-SNAPSHOT/WEB-INF/appengine-generated/datastore-indexes-auto.xml" afterPath="$PROJECT_DIR$/target/ToDoList-1.0-SNAPSHOT/WEB-INF/appengine-generated/datastore-indexes-auto.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/ToDoList-1.0-SNAPSHOT/WEB-INF/pages/ViewList.jsp" afterPath="$PROJECT_DIR$/target/ToDoList-1.0-SNAPSHOT/WEB-INF/pages/ViewList.jsp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" afterPath="$PROJECT_DIR$/target/maven-archiver/pom.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-com.ToDoList.GuestbookServletTest.xml" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-com.ToDoList.GuestbookServletTest.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-com.ToDoList.SignGuestbookServletTest.xml" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-com.ToDoList.SignGuestbookServletTest.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/surefire-reports/com.ToDoList.GuestbookServletTest.txt" afterPath="$PROJECT_DIR$/target/surefire-reports/com.ToDoList.GuestbookServletTest.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/surefire-reports/com.ToDoList.SignGuestbookServletTest.txt" afterPath="$PROJECT_DIR$/target/surefire-reports/com.ToDoList.SignGuestbookServletTest.txt" />
     </list>
     <ignored path="ToDoList.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -42,8 +28,8 @@
       <file leaf-file-name="ViewList.jsp" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/ViewList.jsp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1296">
-              <caret line="136" column="82" selection-start-line="136" selection-start-column="82" selection-end-line="136" selection-end-column="82" />
+            <state relative-caret-position="90">
+              <caret line="85" column="36" selection-start-line="85" selection-start-column="36" selection-end-line="85" selection-end-column="36" />
               <folding />
             </state>
           </provider>
@@ -52,8 +38,8 @@
       <file leaf-file-name="HomeController.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/ToDoList/controller/HomeController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="608">
-              <caret line="265" column="51" selection-start-line="265" selection-start-column="51" selection-end-line="265" selection-end-column="51" />
+            <state relative-caret-position="557">
+              <caret line="290" column="1" selection-start-line="290" selection-start-column="1" selection-end-line="290" selection-end-column="1" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -64,7 +50,7 @@
       <file leaf-file-name="ToDoList.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/ToDoList/Beans/ToDoList.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
+            <state relative-caret-position="30">
               <caret line="15" column="31" selection-start-line="15" selection-start-column="19" selection-end-line="15" selection-end-column="31" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -119,8 +105,8 @@
         <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/signIn.jsp" />
         <option value="$PROJECT_DIR$/src/main/java/com/ToDoList/Beans/ListItem.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/ToDoList/Beans/ToDoList.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/ToDoList/controller/HomeController.java" />
         <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/Lists.jsp" />
+        <option value="$PROJECT_DIR$/src/main/java/com/ToDoList/controller/HomeController.java" />
         <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/ViewList.jsp" />
       </list>
     </option>
@@ -753,10 +739,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/Lists.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="260">
+          <caret line="26" column="0" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/ToDoList/controller/HomeController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="608">
-          <caret line="265" column="51" selection-start-line="265" selection-start-column="51" selection-end-line="265" selection-end-column="51" />
+        <state relative-caret-position="557">
+          <caret line="290" column="1" selection-start-line="290" selection-start-column="1" selection-end-line="290" selection-end-column="1" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -765,7 +759,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/ToDoList/Beans/ToDoList.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
+        <state relative-caret-position="30">
           <caret line="15" column="31" selection-start-line="15" selection-start-column="19" selection-end-line="15" selection-end-column="31" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -777,18 +771,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/Lists.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="260">
-          <caret line="26" column="0" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/ViewList.jsp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1296">
-          <caret line="136" column="82" selection-start-line="136" selection-start-column="82" selection-end-line="136" selection-end-column="82" />
+        <state relative-caret-position="90">
+          <caret line="85" column="36" selection-start-line="85" selection-start-column="36" selection-end-line="85" selection-end-column="36" />
           <folding />
         </state>
       </provider>

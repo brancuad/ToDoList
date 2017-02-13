@@ -73,12 +73,29 @@
 
                 //update the itemToBeDeleted field
                 $("#itemToBeDeleted").attr("value", $(this).attr('id'));
+                $("#itemToBeEdited").attr("value", $(this).attr('id'));
             });
 
             $("#addNewListItemButton").click(function(){
                 $("#newListItemDialog").show();
             });
         });
+
+        function populateEditListItemDialog(){
+            //we are setting the value of the edit text fields to the html between the td elements of the
+            //selected list item row
+            $("#editItemCategoryInput").val($(".selected #itemCategory").html());
+            $("#editItemDescriptionInput").val($(".selected #itemDescription").html());
+            $("#editItemStartDateInput").val($(".selected #itemStartDate").html());
+            $("#editItemEndDateInput").val($(".selected #itemEndDate").html());
+            if($(".selected #itemCompleted").html() == "true"){
+                $("#editItemCompleted").attr("checked", true);
+            }
+            else{
+                $("#editItemCompleted").attr("checked", false);
+            }
+            $("#editListItemDialog").show();
+        }
     </script>
 </head>
 
@@ -158,6 +175,8 @@
                 <button class="itemButton" type="submit" onclick="form.action='/moveItemDown';">
                     <img src="../images/MoveDown.png" />
                 </button>
+                <button class="fileButton" type="button" title="Edit" onclick="populateEditListItemDialog()">
+                </button>
             </div>
         </form>
 
@@ -174,11 +193,11 @@
             <tbody>
                 <c:forEach var="listItem" items="${listItems}">
                     <tr id="${listItem.id}">
-                        <td>${listItem.category}</td>
-                        <td>${listItem.description}</td>
-                        <td>${listItem.startDate}</td>
-                        <td>${listItem.endDate}</td>
-                        <td>${listItem.completed}</td>
+                        <td id="itemCategory">${listItem.category}</td>
+                        <td id="itemDescription">${listItem.description}</td>
+                        <td id="itemStartDate">${listItem.startDate}</td>
+                        <td id="itemEndDate">${listItem.endDate}</td>
+                        <td id="itemCompleted">${listItem.completed}</td>
                     </tr>
                 </c:forEach>
 
@@ -198,6 +217,22 @@
             <input type="hidden" value="${listId}" name="listId"/>
             <input type="hidden" name="ownerName" value="${ownerName}" />
             <input type="submit" value="Add"/>
+        </form>
+    </div>
+    <div id="editListItemDialog" display="none">
+        <form method="post" action="/editListItem">
+            <input id="editItemCategoryInput" type="text" name="category"/>
+            <input id="editItemDescriptionInput" type="text" name="description"/>
+            <input id="editItemStartDateInput" type="text" name="startDate"/>
+            <input id="editItemEndDateInput" type="text" name="endDate"/>
+            <input id="editItemCompleted" type='checkbox' value="true" name="completed"/>
+            <input type='checkbox' checked="checked" value="false" name="completed" style="display: none;"/>
+            <input type="hidden" value="${listName}" name="listName"/>
+            <input type="hidden" value="${listId}" name="listId"/>
+            <input type="hidden" name="ownerName" value="${ownerName}" />
+            <!-- keeps track of selected list item id -->
+            <input id="itemToBeEdited" type="hidden" name="id"/>
+            <button type="submit" value="edit"></button>
         </form>
     </div>
 </body>
