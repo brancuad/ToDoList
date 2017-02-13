@@ -4,59 +4,12 @@
 
 <html>
 <head>
-    <link type="text/css" rel="stylesheet" href="/stylesheets/main.css"/>
     <link type="text/css" rel="stylesheet" href="/stylesheets/bootstrap.css"/>
+        <link type="text/css" rel="stylesheet" href="/stylesheets/main.css"/>
     <link rel="icon" href="../images/ToDoListMakerLogo.png" type="image/x-icon" />
     <script src="../scripts/jquery-3.1.1.min.js"></script>
 
     <style>
-        body {
-            font-family: Verdana, Helvetica, sans-serif;
-            background-color: lightblue;
-        }
-
-        #file {
-            margin: 10px;
-        }
-
-        .fileButton {
-            padding: 5px;
-        }
-
-        .itemButton {
-            padding: 5px;
-        }
-
-        .divider {
-            background-color: #33393c;
-            height: 5px;
-            width: 100%;
-        }
-
-        .section {
-            border: 2px solid #33393c;
-            padding: 10px;
-            margin: 10px;
-        }
-
-        #itemsTable {
-            border: 1px solid #33393c;
-            margin-top: 10px;
-        }
-
-        #detailsTable td {
-            padding: 5px;
-        }
-
-        .title {
-            font-size: 24px;
-            font-weight: bold;
-            margin: 10px;
-        }
-
-        .selected {
-            background-color: white;
-        }
 
     </style>
 
@@ -74,12 +27,14 @@
                 //update the itemToBeDeleted field
                 $("#itemToBeDeleted").attr("value", $(this).attr('id'));
                 $("#itemToBeEdited").attr("value", $(this).attr('id'));
+
             });
 
             $("#addNewListItemButton").click(function(){
                 $("#newListItemDialog").show();
             });
         });
+
 
         function populateEditListItemDialog(){
             //we are setting the value of the edit text fields to the html between the td elements of the
@@ -97,6 +52,29 @@
 
             $("#editListItemDialog").show();
         }
+
+        function moveDown() {
+            $("#" + $("#selectedItem").attr("value")).next().click();
+        }
+
+        function moveUp() {
+            $("#" + $("#selectedItem").attr("value")).prev().click();
+        }
+
+        $(document).keydown(function(e) {
+            switch(e.which) {
+                case 38: // up
+                moveUp();
+                break;
+
+                case 40: // down
+                moveDown();
+                break;
+
+                default: return;
+            }
+        });
+        
     </script>
 </head>
 
@@ -150,14 +128,16 @@
     <div id="items" class="section">
         <h3>Items</h3>
 
-        <form method="post">
             <div id="itemTools">
-                <button type="button" class="itemButton" id="addNewListItemButton" title="Add item">
-                    <img src="../images/Add.png" />
-                </button>
-                <button class="itemButton" type="submit" title="Remove Item" onclick="form.action='/removeListItem'">
-                    <img src="../images/Remove.png" />
-                </button>
+
+                <form method="post" style="display: inline;">
+                    <button type="button" class="itemButton" id="addNewListItemButton" title="Add item">
+                        <img src="../images/Add.png" />
+                    </button>
+                    <button class="itemButton" type="submit" title="Remove Item" onclick="form.action='/removeListItem'">
+                        <img src="../images/Remove.png" />
+                    </button>
+                </form>
 
                 <!-- list name parameter -->
                 <input type="hidden" value="${listName}" name="listName"/>
@@ -168,18 +148,19 @@
                 <input type="hidden" name="ownerName" value="${ownerName}" />
 
                 <!-- keeps track of selected list item id -->
-                <input id="itemToBeDeleted" type="hidden" name="id"/>
+                <input id="selectedItem" type="hidden" name="id"/>
 
-                <button class="itemButton" type="submit" onclick="form.action='/moveItemUp';">
+                <button class="itemButton" type="submit" onclick="moveUp()">
                     <img src="../images/MoveUp.png" />
                 </button>
-                <button class="itemButton" type="submit" onclick="form.action='/moveItemDown';">
+                <button class="itemButton" type="submit" onclick="moveDown()">
                     <img src="../images/MoveDown.png" />
                 </button>
-                <button class="fileButton" type="button" id="updateListItemButton" title="Edit" onclick="populateEditListItemDialog()">Update
+
+                <button class="fileButton" type="button" id="updateListItemButton" title="Edit" onclick="populateEditListItemDialog()">
+                    Update
                 </button>
             </div>
-        </form>
 
         <table class="table" id="itemsTable">
             <thead>
