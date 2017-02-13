@@ -231,7 +231,7 @@
             <input type="hidden" name="ownerName" value="${ownerName}" />
             <!-- keeps track of selected list item id -->
             <input id="itemToBeEdited" type="hidden" name="id"/>
-            <button type="submit" value="edit"></button>
+            <button type="submit" value="edit">Update</button>
         </form>
     </div>
 </body>
