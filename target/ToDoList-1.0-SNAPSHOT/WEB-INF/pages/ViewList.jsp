@@ -28,8 +28,10 @@
                 $("#itemsTable tr").removeClass("selected");
                 $(this).addClass("selected");
 
-                //update the selectedItem field
-                $("#selectedItem").attr("value", $(this).attr('id'));
+                //update the itemToBeDeleted field
+                $("#itemToBeDeleted").attr("value", $(this).attr('id'));
+                $("#itemToBeEdited").attr("value", $(this).attr('id'));
+
 
             });
 
@@ -51,15 +53,17 @@
             else{
                 $("#editItemCompleted").attr("checked", false);
             }
+
             $("#editListItemDialog").fadeIn();
+
         }
 
         function moveDown() {
-            $("#" + $("#selectedItem").attr("value")).next().click();
+            $("#" + $("#itemToBeDeleted").attr("value")).next().click();
         }
 
         function moveUp() {
-            $("#" + $("#selectedItem").attr("value")).prev().click();
+            $("#" + $("#itemToBeDeleted").attr("value")).prev().click();
         }
 
         $(document).keydown(function(e) {
@@ -75,7 +79,6 @@
                 default: return;
             }
         });
-
     </script>
 </head>
 
@@ -83,15 +86,15 @@
     <form method="post">
     <div id="file">
         <!-- It doesnt seem like these buttons will be used according to how the application is built -->
-        <button class="fileButton" type="submit" title="Create New List">
-            <img src="../images/New.png" />
-        </button>
-        <button class="fileButton" type="submit" title="Load Existing List">
-            <img src="../images/Load.png" />
-        </button>
-        <button class="fileButton" type="submit" title="Save List">
-            <img src="../images/Save.png" />
-        </button>
+        <%--<button class="fileButton" type="submit" title="Create New List">--%>
+            <%--<img src="../images/New.png" />--%>
+        <%--</button>--%>
+        <%--<button class="fileButton" type="submit" title="Load Existing List">--%>
+            <%--<img src="../images/Load.png" />--%>
+        <%--</button>--%>
+        <%--<button class="fileButton" type="submit" title="Save List">--%>
+            <%--<img src="../images/Save.png" />--%>
+        <%--</button>--%>
         <!-- end comment -->
 
         <button class="fileButton" type="submit" title="Exit" onclick="form.action='/'">
@@ -129,39 +132,41 @@
     <div id="items" class="section">
         <h3>Items</h3>
 
-            <div id="itemTools">
+            <form method="post" style="display: inline;">
+                <div id="itemTools">
 
-                <form method="post" style="display: inline;">
                     <button type="button" class="itemButton" id="addNewListItemButton" title="Add item">
                         <img src="../images/Add.png" />
                     </button>
                     <button class="itemButton" type="submit" title="Remove Item" onclick="form.action='/removeListItem'">
                         <img src="../images/Remove.png" />
                     </button>
-                </form>
 
-                <!-- list name parameter -->
-                <input type="hidden" value="${listName}" name="listName"/>
+                    <!-- list name parameter -->
+                    <input type="hidden" value="${listName}" name="listName"/>
 
-                <!-- id of list being viewed -->
-                <input type="hidden" value="${listId}" name="listId"/>
+                    <!-- id of list being viewed -->
+                    <input type="hidden" value="${listId}" name="listId"/>
 
-                <input type="hidden" name="ownerName" value="${ownerName}" />
+                    <input type="hidden" name="ownerName" value="${ownerName}" />
 
-                <!-- keeps track of selected list item id -->
-                <input id="selectedItem" type="hidden" name="id"/>
+                    <!-- keeps track of selected list item id -->
+                    <input id="itemToBeDeleted" type="hidden" name="id"/>
 
-                <button class="itemButton" type="submit" onclick="moveUp()">
-                    <img src="../images/MoveUp.png" />
-                </button>
-                <button class="itemButton" type="submit" onclick="moveDown()">
-                    <img src="../images/MoveDown.png" />
-                </button>
+                    <button class="itemButton" type="submit" onclick="form.action='/moveItemUp'">
+                        <img src="../images/MoveUp.png" />
+                    </button>
+                    <button class="itemButton" type="submit" onclick="form.action='/moveItemDown'">
+                        <img src="../images/MoveDown.png" />
+                    </button>
 
-                <button class="fileButton" type="button" title="Edit" onclick="populateEditListItemDialog()">
-                    <img src="../images/Edit.png" />
-                </button>
-            </div>
+                    <button class="fileButton" type="button" id="updateListItemButton" title="Edit" onclick="populateEditListItemDialog()">
+                        <img src="../images/Edit.png" />
+                    </button>
+
+                </div>
+
+            </form>
 
         <table class="table" id="itemsTable">
             <thead>
@@ -188,7 +193,7 @@
         </table>
     </div>
     <div id="newListItemDialog" style="display:none;">
-        New List Item
+        New Task
         <form action="/createListItem" method="post">
             <input type="text" name="category"/>
             <input type="text" name="description"/>
@@ -202,7 +207,10 @@
             <input type="submit" value="Add"/>
         </form>
     </div>
-    <div id="editListItemDialog" style="display: none;">
+
+    <div id="editListItemDialog" style="display:none;">
+        Edit Task
+
         <form method="post" action="/editListItem">
             <input id="editItemCategoryInput" type="text" name="category"/>
             <input id="editItemDescriptionInput" type="text" name="description"/>
@@ -214,7 +222,10 @@
             <input type="hidden" value="${listId}" name="listId"/>
             <input type="hidden" name="ownerName" value="${ownerName}" />
             <!-- keeps track of selected list item id -->
-            <button type="submit" value="edit">Edit</button>
+
+            <input id="itemToBeEdited" type="hidden" name="id"/>
+            <button type="submit" value="edit">Update</button>
+
         </form>
     </div>
 </body>

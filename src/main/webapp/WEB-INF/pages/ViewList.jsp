@@ -28,14 +28,10 @@
                 $("#itemsTable tr").removeClass("selected");
                 $(this).addClass("selected");
 
-<<<<<<< HEAD
                 //update the itemToBeDeleted field
                 $("#itemToBeDeleted").attr("value", $(this).attr('id'));
                 $("#itemToBeEdited").attr("value", $(this).attr('id'));
-=======
-                //update the selectedItem field
-                $("#selectedItem").attr("value", $(this).attr('id'));
->>>>>>> UI updates
+
 
             });
 
@@ -44,10 +40,6 @@
             });
         });
 
-<<<<<<< HEAD
-
-=======
->>>>>>> UI updates
         function populateEditListItemDialog(){
             //we are setting the value of the edit text fields to the html between the td elements of the
             //selected list item row
@@ -61,20 +53,17 @@
             else{
                 $("#editItemCompleted").attr("checked", false);
             }
-<<<<<<< HEAD
 
-            $("#editListItemDialog").show();
-=======
             $("#editListItemDialog").fadeIn();
->>>>>>> UI updates
+
         }
 
         function moveDown() {
-            $("#" + $("#selectedItem").attr("value")).next().click();
+            $("#" + $("#itemToBeDeleted").attr("value")).next().click();
         }
 
         function moveUp() {
-            $("#" + $("#selectedItem").attr("value")).prev().click();
+            $("#" + $("#itemToBeDeleted").attr("value")).prev().click();
         }
 
         $(document).keydown(function(e) {
@@ -90,11 +79,6 @@
                 default: return;
             }
         });
-<<<<<<< HEAD
-        
-=======
-
->>>>>>> UI updates
     </script>
 </head>
 
@@ -148,44 +132,41 @@
     <div id="items" class="section">
         <h3>Items</h3>
 
-            <div id="itemTools">
+            <form method="post" style="display: inline;">
+                <div id="itemTools">
 
-                <form method="post" style="display: inline;">
                     <button type="button" class="itemButton" id="addNewListItemButton" title="Add item">
                         <img src="../images/Add.png" />
                     </button>
                     <button class="itemButton" type="submit" title="Remove Item" onclick="form.action='/removeListItem'">
                         <img src="../images/Remove.png" />
                     </button>
-                </form>
 
-                <!-- list name parameter -->
-                <input type="hidden" value="${listName}" name="listName"/>
+                    <!-- list name parameter -->
+                    <input type="hidden" value="${listName}" name="listName"/>
 
-                <!-- id of list being viewed -->
-                <input type="hidden" value="${listId}" name="listId"/>
+                    <!-- id of list being viewed -->
+                    <input type="hidden" value="${listId}" name="listId"/>
 
-                <input type="hidden" name="ownerName" value="${ownerName}" />
+                    <input type="hidden" name="ownerName" value="${ownerName}" />
 
-                <!-- keeps track of selected list item id -->
-                <input id="selectedItem" type="hidden" name="id"/>
+                    <!-- keeps track of selected list item id -->
+                    <input id="itemToBeDeleted" type="hidden" name="id"/>
 
-                <button class="itemButton" type="submit" onclick="moveUp()">
-                    <img src="../images/MoveUp.png" />
-                </button>
-                <button class="itemButton" type="submit" onclick="moveDown()">
-                    <img src="../images/MoveDown.png" />
-                </button>
+                    <button class="itemButton" type="submit" onclick="form.action='/moveItemUp'">
+                        <img src="../images/MoveUp.png" />
+                    </button>
+                    <button class="itemButton" type="submit" onclick="form.action='/moveItemDown'">
+                        <img src="../images/MoveDown.png" />
+                    </button>
 
-<<<<<<< HEAD
-                <button class="fileButton" type="button" id="updateListItemButton" title="Edit" onclick="populateEditListItemDialog()">
-                    Update
-=======
-                <button class="fileButton" type="button" title="Edit" onclick="populateEditListItemDialog()">
-                    <img src="../images/Edit.png" />
->>>>>>> UI updates
-                </button>
-            </div>
+                    <button class="fileButton" type="button" id="updateListItemButton" title="Edit" onclick="populateEditListItemDialog()">
+                        <img src="../images/Edit.png" />
+                    </button>
+
+                </div>
+
+            </form>
 
         <table class="table" id="itemsTable">
             <thead>
