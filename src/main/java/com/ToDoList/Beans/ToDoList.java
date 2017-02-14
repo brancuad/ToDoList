@@ -14,6 +14,8 @@ public class ToDoList {
     public String listName;
     private String ownerName;
     private String author_email;
+    //public or private
+    public boolean priv;
     @Index private String author_id;
 
     public ToDoList() {}
@@ -23,10 +25,11 @@ public class ToDoList {
         this.listName = listName;
     }
 
-    public void setAuthor(String author_email,String author_id)
+    public void setAuthor(String author_email,String author_id,boolean priv)
     {
         this.author_email=author_email;
         this.author_id=author_id;
+        this.priv = priv;
     }
 
 
@@ -60,5 +63,16 @@ public class ToDoList {
     public void setListName(String listName){
         this.listName= listName;
     }
+
+    public void setStatus(boolean status)
+    {
+        this.priv=status;
+    }
+
+    public boolean getStatus()
+    {
+        return priv;
+    }
+
 
 }

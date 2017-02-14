@@ -1,5 +1,4 @@
 package com.ToDoList.controller;
-
 import com.ToDoList.Beans.ListItem;
 import com.ToDoList.Beans.ToDoList;
 import com.google.appengine.api.users.User;
@@ -20,8 +19,6 @@ import java.util.List;
  */
 @Controller
 public class HomeController {
-
-
     //default method controller
     @RequestMapping("/")
     public ModelAndView home() {
@@ -30,7 +27,23 @@ public class HomeController {
 
         //if a user is not signed in, redirect to sign in page
         if (user == null) {
-            ModelAndView model = new ModelAndView("redirect:" + userService.createLoginURL("/"));
+            //load lists for public
+            List<ToDoList> list = ObjectifyService.ofy()
+                    .load()
+                    .type(ToDoList.class)
+                    .list();
+
+            List<ToDoList>lists=new ArrayList<>();
+            int x=0;
+            for(int i=0;i<list.size();i++){
+                if(list.get(i).getStatus()==false){
+                    lists.add(x,list.get(i));
+                    x++;
+                }
+            }
+
+            ModelAndView model = new ModelAndView("WEB-INF/pages/PublicLists");
+            model.addObject("lists", lists);
             return model;
         }
 
@@ -52,6 +65,7 @@ public class HomeController {
         }
     }
 
+
     @RequestMapping("/signout")
     public ModelAndView signout (){
         UserService userService = UserServiceFactory.getUserService();
@@ -59,19 +73,67 @@ public class HomeController {
         return model;
     }
 
+
+    @RequestMapping("/signin")
+    public ModelAndView signin (){
+        UserService userService = UserServiceFactory.getUserService();
+        ModelAndView model = new ModelAndView("redirect:" + userService.createLoginURL("/"));
+        return model;
+    }
+
+
+    @RequestMapping("/viewPublicList")
+    public ModelAndView viewPublicList(@RequestParam("id") Long listId, @RequestParam("name") String listName, @RequestParam("ownerName") String ownerName){
+        //create key for list with specified list ID
+        Key<ToDoList> listKey = Key.create(ToDoList.class, listId);
+        ToDoList currentList = ObjectifyService.ofy().load().type(ToDoList.class).id(listId).now();
+        boolean stat = currentList.getStatus();
+
+        List<ListItem> listItems = ObjectifyService.ofy()
+                .load()
+                .type(ListItem.class)
+                .ancestor(listKey)
+                .order("ord_ind")       // sort based on order index
+                .limit(25)             // not sure if we need to limit the results. But ill leave this here for now.
+                .list();
+
+        ModelAndView model = new ModelAndView("WEB-INF/pages/viewPublicLists");
+        model.addObject("listItems", listItems);
+        model.addObject("listStatus",stat);
+        model.addObject("listName", listName);
+        model.addObject("listId", listId);
+        model.addObject("ownerName", currentList.getAuthorEmail());
+
+        return model;
+    }
+
+
     @RequestMapping("/createList")
-    public ModelAndView createList(@RequestParam("listName") String name){
+    public ModelAndView createList(@RequestParam("listName") String name,@RequestParam("status") String status){
         UserService userService = UserServiceFactory.getUserService();
         User user = userService.getCurrentUser();  // Find out who the user is.
 
+        //Find the value of status of the list
+        boolean pri;
+        if(status.equals("private")){
+            pri=true;
+        }
+        else{
+            pri=false;
+        }
+
         ToDoList list = new ToDoList(name);
-        list.setAuthor(user.getEmail(),user.getUserId());
+        list.setAuthor(user.getEmail(),user.getUserId(),pri);
+
 
         //Save the list
         ObjectifyService.ofy().save().entity(list).now();
 
         return home();
     }
+
+
+
 
     @RequestMapping("/deleteList")
     public ModelAndView deleteList(@RequestParam("id") Long listId){
@@ -105,7 +167,7 @@ public class HomeController {
 
 
     @RequestMapping("/saveListInfo")
-    public ModelAndView saveListInfo(@RequestParam("listId") Long id, @RequestParam("name") String name, @RequestParam("ownerName") String ownerName){
+    public ModelAndView saveListInfo(@RequestParam("listId") Long id, @RequestParam("name") String name, @RequestParam("ownerName") String ownerName,String status){
         //get ToDoList using the id
         ToDoList list = ObjectifyService.ofy()
                 .load()
@@ -115,12 +177,19 @@ public class HomeController {
         //update list info
         list.setOwnerName(ownerName);
         list.listName = name;
+        if(status.equals("private")){
+            list.priv=true;
+        }
+        else{
+            list.priv=false;
+        }
 
         //save
         ObjectifyService.ofy().save().entity(list).now();
 
         return editList(id, name, ownerName);
     }
+
 
     @RequestMapping("/createListItem")
     public ModelAndView createListItem(@RequestParam("listId") Long listId, @RequestParam("listName") String listName, @RequestParam("ownerName") String ownerName, @RequestParam("category") String category, @RequestParam("description") String description,
@@ -213,6 +282,11 @@ public class HomeController {
         ListItem item = ObjectifyService.ofy().load().type(ListItem.class).parent(listKey).id(itemIdLong).now();
         int orderNumber = item.ord_ind;
 
+        System.out.println("Before");
+        for (ListItem listItem : items) {
+            System.out.println(listItem.getCategory() + " " + listItem.ord_ind);
+        }
+
         // first item on the list can't be moved up
         if (orderNumber > 0) {
             item.ord_ind--;
@@ -222,10 +296,10 @@ public class HomeController {
                 if (listItem.ord_ind == orderNumber - 1 && listItem.id != itemIdLong) {
                     listItem.ord_ind++;
                 }
+                System.out.println(listItem.getCategory() + " " + listItem.ord_ind);
             }
 
             ObjectifyService.ofy().save().entities(items).now();
-
 
         }
         return editList(listId, listName, ownerName);
@@ -250,19 +324,25 @@ public class HomeController {
         ListItem item = ObjectifyService.ofy().load().type(ListItem.class).parent(listKey).id(itemIdLong).now();
         int orderNumber = item.ord_ind;
 
+        System.out.println("Before");
+        for (ListItem listItem : items) {
+            System.out.println(listItem.getCategory() + " " + listItem.ord_ind);
+        }
+
         // can't move last item on the list down
         if (orderNumber < items.size()-1) {
             item.ord_ind++;
 
+            System.out.println("After");
             // increment order number of the item on top of the selected item
             for (ListItem listItem : items) {
                 if (listItem.ord_ind == orderNumber + 1 && listItem.id != itemIdLong) {
                     listItem.ord_ind--;
                 }
+                System.out.println(listItem.getCategory() + " " + listItem.ord_ind);
             }
 
             ObjectifyService.ofy().save().entities(items).now();
-
 
         }
         return editList(listId, listName, ownerName);
