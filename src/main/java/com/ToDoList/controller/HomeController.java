@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 /**
  * Created by awaeschoudhary on 2/9/17.
@@ -285,6 +287,396 @@ public class HomeController {
 
         //save
         ObjectifyService.ofy().save().entity(item).now();
+
+        return editList(listId, listName, ownerName);
+    }
+
+    @RequestMapping("/sortCatUp")
+    public ModelAndView sortCatUp(@RequestParam("listId") Long listId, @RequestParam("listName") String listName,
+                                  @RequestParam("ownerName") String ownerName) {
+
+        Key<ToDoList> listKey = Key.create(ToDoList.class, listId);
+
+        // Run an ancestor query to ensure we see the most up-to-date
+        // view of the Greetings belonging to the selected Guestbook.
+        List<ListItem> items = ObjectifyService.ofy()
+                .load()
+                .type(ListItem.class)
+                .ancestor(listKey)
+                .list();
+
+        if (items.size() == 0) {
+            return editList(listId, listName, ownerName);
+        }
+
+        ArrayList<String> cats = new ArrayList<String>();
+        // Populate list with category names
+        for (ListItem listItem : items) {
+            cats.add(listItem.getCategory());
+        }
+
+        Collections.sort(cats);
+
+        for (int i = 0; i < items.size(); i++) {
+            for (ListItem listItem : items) {
+                if (cats.get(i).equals(listItem.category)) {
+                    listItem.ord_ind = i;
+                }
+            }
+        }
+
+        ObjectifyService.ofy().save().entities(items).now();
+
+        return editList(listId, listName, ownerName);
+    }
+
+    @RequestMapping("/sortCatDown")
+    public ModelAndView sortCatDown(@RequestParam("listId") Long listId, @RequestParam("listName") String listName,
+                                    @RequestParam("ownerName") String ownerName) {
+
+        Key<ToDoList> listKey = Key.create(ToDoList.class, listId);
+
+        // Run an ancestor query to ensure we see the most up-to-date
+        // view of the Greetings belonging to the selected Guestbook.
+        List<ListItem> items = ObjectifyService.ofy()
+                .load()
+                .type(ListItem.class)
+                .ancestor(listKey)
+                .list();
+
+        if (items.size() == 0) {
+            return editList(listId, listName, ownerName);
+        }
+
+        ArrayList<String> cats = new ArrayList<String>();
+        // Populate list with category names
+        for (ListItem listItem : items) {
+            cats.add(listItem.getCategory());
+        }
+
+        Collections.sort(cats);
+
+        for (int i = 0; i < items.size(); i++) {
+            for (ListItem listItem : items) {
+                if (cats.get(i).equals(listItem.category)) {
+                    listItem.ord_ind = items.size() - 1 - i;
+                }
+            }
+        }
+
+        ObjectifyService.ofy().save().entities(items).now();
+
+        return editList(listId, listName, ownerName);
+    }
+
+    @RequestMapping("/sortDesUp")
+    public ModelAndView sortDesUp(@RequestParam("listId") Long listId, @RequestParam("listName") String listName,
+                                  @RequestParam("ownerName") String ownerName) {
+
+        Key<ToDoList> listKey = Key.create(ToDoList.class, listId);
+
+        // Run an ancestor query to ensure we see the most up-to-date
+        // view of the Greetings belonging to the selected Guestbook.
+        List<ListItem> items = ObjectifyService.ofy()
+                .load()
+                .type(ListItem.class)
+                .ancestor(listKey)
+                .list();
+
+        if (items.size() == 0) {
+            return editList(listId, listName, ownerName);
+        }
+
+        ArrayList<String> desc = new ArrayList<String>();
+        // Populate list with category names
+        for (ListItem listItem : items) {
+            desc.add(listItem.getDescription());
+        }
+
+        Collections.sort(desc);
+
+        for (int i = 0; i < items.size(); i++) {
+            for (ListItem listItem : items) {
+                if (desc.get(i).equals(listItem.getDescription())) {
+                    listItem.ord_ind = i;
+                }
+            }
+        }
+
+        ObjectifyService.ofy().save().entities(items).now();
+
+        return editList(listId, listName, ownerName);
+    }
+
+    @RequestMapping("/sortDesDown")
+    public ModelAndView sortDesDown(@RequestParam("listId") Long listId, @RequestParam("listName") String listName,
+                                    @RequestParam("ownerName") String ownerName) {
+
+        Key<ToDoList> listKey = Key.create(ToDoList.class, listId);
+
+        // Run an ancestor query to ensure we see the most up-to-date
+        // view of the Greetings belonging to the selected Guestbook.
+        List<ListItem> items = ObjectifyService.ofy()
+                .load()
+                .type(ListItem.class)
+                .ancestor(listKey)
+                .list();
+
+        if (items.size() == 0) {
+            return editList(listId, listName, ownerName);
+        }
+
+        ArrayList<String> desc = new ArrayList<String>();
+        // Populate list with category names
+        for (ListItem listItem : items) {
+            desc.add(listItem.getDescription());
+        }
+
+        Collections.sort(desc);
+
+        for (int i = 0; i < items.size(); i++) {
+            for (ListItem listItem : items) {
+                if (desc.get(i).equals(listItem.getDescription())) {
+                    listItem.ord_ind = items.size() - 1 - i;
+                }
+            }
+        }
+
+        ObjectifyService.ofy().save().entities(items).now();
+
+        return editList(listId, listName, ownerName);
+    }
+
+    @RequestMapping("/sortSDateUp")
+    public ModelAndView sortSDateUp(@RequestParam("listId") Long listId, @RequestParam("listName") String listName,
+                                    @RequestParam("ownerName") String ownerName) {
+
+        Key<ToDoList> listKey = Key.create(ToDoList.class, listId);
+
+        // Run an ancestor query to ensure we see the most up-to-date
+        // view of the Greetings belonging to the selected Guestbook.
+        List<ListItem> items = ObjectifyService.ofy()
+                .load()
+                .type(ListItem.class)
+                .ancestor(listKey)
+                .list();
+
+        if (items.size() == 0) {
+            return editList(listId, listName, ownerName);
+        }
+
+        ArrayList<String> desc = new ArrayList<String>();
+        // Populate list with category names
+        for (ListItem listItem : items) {
+            desc.add(listItem.getStartDate());
+        }
+
+        Collections.sort(desc);
+
+        for (int i = 0; i < items.size(); i++) {
+            for (ListItem listItem : items) {
+                if (desc.get(i).equals(listItem.startDate)) {
+                    listItem.ord_ind = i;
+                }
+            }
+        }
+
+        ObjectifyService.ofy().save().entities(items).now();
+
+        return editList(listId, listName, ownerName);
+    }
+
+    @RequestMapping("/sortSDateDown")
+    public ModelAndView sortSDateDown(@RequestParam("listId") Long listId, @RequestParam("listName") String listName,
+                                      @RequestParam("ownerName") String ownerName) {
+
+        Key<ToDoList> listKey = Key.create(ToDoList.class, listId);
+
+        // Run an ancestor query to ensure we see the most up-to-date
+        // view of the Greetings belonging to the selected Guestbook.
+        List<ListItem> items = ObjectifyService.ofy()
+                .load()
+                .type(ListItem.class)
+                .ancestor(listKey)
+                .list();
+
+        if (items.size() == 0) {
+            return editList(listId, listName, ownerName);
+        }
+
+        ArrayList<String> desc = new ArrayList<String>();
+        // Populate list with category names
+        for (ListItem listItem : items) {
+            desc.add(listItem.getStartDate());
+        }
+
+        Collections.sort(desc);
+
+        for (int i = 0; i < items.size(); i++) {
+            for (ListItem listItem : items) {
+                if (desc.get(i).equals(listItem.startDate)) {
+                    listItem.ord_ind = items.size() - 1 - i;
+                }
+            }
+        }
+
+        ObjectifyService.ofy().save().entities(items).now();
+
+        return editList(listId, listName, ownerName);
+    }
+
+    @RequestMapping("/sortEDateUp")
+    public ModelAndView sortEDateUp(@RequestParam("listId") Long listId, @RequestParam("listName") String listName,
+                                    @RequestParam("ownerName") String ownerName) {
+
+        Key<ToDoList> listKey = Key.create(ToDoList.class, listId);
+
+        // Run an ancestor query to ensure we see the most up-to-date
+        // view of the Greetings belonging to the selected Guestbook.
+        List<ListItem> items = ObjectifyService.ofy()
+                .load()
+                .type(ListItem.class)
+                .ancestor(listKey)
+                .list();
+
+        if (items.size() == 0) {
+            return editList(listId, listName, ownerName);
+        }
+
+        ArrayList<String> desc = new ArrayList<String>();
+        // Populate list with category names
+        for (ListItem listItem : items) {
+            desc.add(listItem.getEndDate());
+        }
+
+        Collections.sort(desc);
+
+        for (int i = 0; i < items.size(); i++) {
+            for (ListItem listItem : items) {
+                if (desc.get(i).equals(listItem.endDate)) {
+                    listItem.ord_ind = i;
+                }
+            }
+        }
+
+        ObjectifyService.ofy().save().entities(items).now();
+
+        return editList(listId, listName, ownerName);
+    }
+
+    @RequestMapping("/sortEDateDown")
+    public ModelAndView sortEDateDown(@RequestParam("listId") Long listId, @RequestParam("listName") String listName,
+                                      @RequestParam("ownerName") String ownerName) {
+
+        Key<ToDoList> listKey = Key.create(ToDoList.class, listId);
+
+        // Run an ancestor query to ensure we see the most up-to-date
+        // view of the Greetings belonging to the selected Guestbook.
+        List<ListItem> items = ObjectifyService.ofy()
+                .load()
+                .type(ListItem.class)
+                .ancestor(listKey)
+                .list();
+
+        if (items.size() == 0) {
+            return editList(listId, listName, ownerName);
+        }
+
+        ArrayList<String> desc = new ArrayList<String>();
+        // Populate list with category names
+        for (ListItem listItem : items) {
+            desc.add(listItem.getEndDate());
+        }
+
+        Collections.sort(desc);
+
+        for (int i = 0; i < items.size(); i++) {
+            for (ListItem listItem : items) {
+                if (desc.get(i).equals(listItem.endDate)) {
+                    listItem.ord_ind = items.size() - 1 - i;
+                }
+            }
+        }
+
+        ObjectifyService.ofy().save().entities(items).now();
+
+        return editList(listId, listName, ownerName);
+    }
+
+    @RequestMapping("/sortCompUp")
+    public ModelAndView sortCompUp(@RequestParam("listId") Long listId, @RequestParam("listName") String listName,
+                                   @RequestParam("ownerName") String ownerName) {
+
+        Key<ToDoList> listKey = Key.create(ToDoList.class, listId);
+
+        // Run an ancestor query to ensure we see the most up-to-date
+        // view of the Greetings belonging to the selected Guestbook.
+        List<ListItem> items = ObjectifyService.ofy()
+                .load()
+                .type(ListItem.class)
+                .ancestor(listKey)
+                .list();
+
+        if (items.size() == 0) {
+            return editList(listId, listName, ownerName);
+        }
+
+        ArrayList<Boolean> completed = new ArrayList<Boolean>();
+        // Populate list with category names
+        for (ListItem listItem : items) {
+            completed.add(listItem.getCompleted());
+        }
+
+        Collections.sort(completed);
+
+        for (int i = 0; i < items.size(); i++) {
+            for (ListItem listItem : items) {
+                if (completed.get(i) == listItem.getCompleted()) {
+                    listItem.ord_ind = i;
+                }
+            }
+        }
+
+        ObjectifyService.ofy().save().entities(items).now();
+
+        return editList(listId, listName, ownerName);
+    }
+
+    @RequestMapping("/sortCompDown")
+    public ModelAndView sortCompDown(@RequestParam("listId") Long listId, @RequestParam("listName") String listName,
+                                     @RequestParam("ownerName") String ownerName) {
+
+        Key<ToDoList> listKey = Key.create(ToDoList.class, listId);
+
+        // Run an ancestor query to ensure we see the most up-to-date
+        // view of the Greetings belonging to the selected Guestbook.
+        List<ListItem> items = ObjectifyService.ofy()
+                .load()
+                .type(ListItem.class)
+                .ancestor(listKey)
+                .list();
+
+        if (items.size() == 0) {
+            return editList(listId, listName, ownerName);
+        }
+
+        ArrayList<Boolean> completed = new ArrayList<Boolean>();
+        // Populate list with category names
+        for (ListItem listItem : items) {
+            completed.add(listItem.getCompleted());
+        }
+
+        Collections.sort(completed);
+
+        for (int i = 0; i < items.size(); i++) {
+            for (ListItem listItem : items) {
+                if (completed.get(i) == listItem.getCompleted()) {
+                    listItem.ord_ind = items.size() - 1 - i;
+                }
+            }
+        }
+
+        ObjectifyService.ofy().save().entities(items).now();
 
         return editList(listId, listName, ownerName);
     }

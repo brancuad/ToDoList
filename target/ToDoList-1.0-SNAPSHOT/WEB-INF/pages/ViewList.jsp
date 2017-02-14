@@ -168,17 +168,28 @@
 
             </form>
 
-        <table class="table" id="itemsTable">
-            <thead>
+        <form>
+            <table class="table" id="itemsTable">
+                <thead>
                 <tr class="disabled">
-                    <th>Category</th>
-                    <th>Description</th>
-                    <th>Start Date</th>
-                    <th>End Date</th>
-                    <th>Completed</th>
+                    <th>Category<button type="submit" title="CategoryUp" onclick="form.action='/sortCatUp'">
+                        <img src="../images/asc.png" width="20" height="20"/></button><button type="submit" title="CategoryDown" onclick="form.action='/sortCatDown'">
+                        <img src="../images/des.png" width="20" height="20"/></button></th>
+                    <th>Description<button type="submit" title="DesUp" onclick="form.action='/sortDesUp'">
+                        <img src="../images/asc.png" width="20" height="20"/></button><button type="submit" title="DesDown" onclick="form.action='/sortDesDown'">
+                        <img src="../images/des.png" width="20" height="20"/></button></th>
+                    <th>Start Date<button type="submit" title="SDateUp" onclick="form.action='/sortSDateUp'">
+                        <img src="../images/asc.png" width="20" height="20"/></button><button type="submit" title="SDateDown" onclick="form.action='/sortSDateDown'">
+                        <img src="../images/des.png" width="20" height="20"/></button></th>
+                    <th>End Date<button type="submit" title="EDateUp" onclick="form.action='/sortEDateUp'">
+                        <img src="../images/asc.png" width="20" height="20"/></button><button type="submit" title="EDateDown" onclick="form.action='/sortEDateDown'">
+                        <img src="../images/des.png" width="20" height="20"/></button></th>
+                    <th>Completed<button type="submit" title="CompUp" onclick="form.action='/sortCompUp'">
+                        <img src="../images/asc.png" width="20" height="20"/></button><button type="submit" title="CompDown" onclick="form.action='/sortCompDown'">
+                        <img src="../images/des.png" width="20" height="20"/></button></th>
                 </tr>
-            </thead>
-            <tbody>
+                </thead>
+                <tbody>
                 <c:forEach var="listItem" items="${listItems}">
                     <tr id="${listItem.id}">
                         <td id="itemCategory">${listItem.category}</td>
@@ -189,8 +200,12 @@
                     </tr>
                 </c:forEach>
 
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+            <input type="hidden" value="${listName}" name="listName"/>
+            <input type="hidden" value="${listId}" name="listId"/>
+            <input type="hidden" name="ownerName" value="${ownerName}" />
+        </form>
     </div>
     <div id="newListItemDialog" style="display:none;">
         New Task
