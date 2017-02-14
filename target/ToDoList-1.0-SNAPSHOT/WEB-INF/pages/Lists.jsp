@@ -53,6 +53,10 @@
             Create New List
             <form action="/createList" method="post">
                 <input type="text" name="listName">
+                <select name="status">
+                    <option value="public">Public</option>
+                    <option value="private">Private</option>
+                </select>
                 <input type="submit" value="Add"/>
             </form>
          </div>

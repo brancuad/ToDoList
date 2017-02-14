@@ -146,6 +146,8 @@ public class HomeController {
     public ModelAndView editList(@RequestParam("id") Long listId, @RequestParam("name") String listName, @RequestParam("ownerName") String ownerName){
         //create key for list with specified list ID
         Key<ToDoList> listKey = Key.create(ToDoList.class, listId);
+        ToDoList currentList = ObjectifyService.ofy().load().type(ToDoList.class).id(listId).now();
+        boolean stat = currentList.getStatus();
 
         List<ListItem> listItems = ObjectifyService.ofy()
                 .load()
@@ -159,7 +161,8 @@ public class HomeController {
         model.addObject("listItems", listItems);
         model.addObject("listName", listName);
         model.addObject("listId", listId);
-        model.addObject("ownerName", ownerName);
+        model.addObject("listStatus",stat);
+        model.addObject("ownerName", currentList.getAuthorEmail());
 
         return model;
 

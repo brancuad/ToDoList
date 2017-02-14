@@ -178,7 +178,7 @@
         </table>
         <input type="hidden" value="${listName}" name="listName"/>
         <input type="hidden" value="${listId}" name="listId"/>
-        <input type="text" name="ownerName" value="${ownerName}" />
+        <input type="hidden" name="ownerName" value="${ownerName}" />
     </form>
 </div>
 
